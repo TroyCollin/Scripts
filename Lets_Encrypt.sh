@@ -16,18 +16,24 @@ echo ""
 echo ""
 echo "v.1.0"
 
+#### start variables ###
+log_file="./certexpiry.txt"
+
+### variables end   ###
+
+
 helpFunction()
 {
    echo ""
-   echo "Usage: $0 -a url "
+   echo "Usage: $0 -U url "
    echo -e "\t-u Enter url like https://www.example.com"
    exit 1 # Exit script after printing help
 }
 
-while getopts "a:" opt
+while getopts "U:" opt
 do
    case "$opt" in
-      a ) url="$OPTARG" ;;
+      U ) url="$OPTARG" ;;
       ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
    esac
 done

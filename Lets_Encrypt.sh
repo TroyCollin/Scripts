@@ -66,6 +66,11 @@ in30days=$(($(date +%s) + (86400*$DAYS)));
 if [ $in30days -gt $expirationdate ]; then
     echo "Alert - Certificate for $host expires in less than $DAYS days, on $(date -d @$expirationdate '+%Y-%m-%d')"
     echo $host","$(date -d @$expirationdate '+%Y-%m-%d') >> $log_file
+
+
+
+
+    
 else
     echo "OK - Certificate expires on $(date -d @$expirationdate '+%Y-%m-%d')"
     echo $host","$(date -d @$expirationdate '+%Y-%m-%d') >> $log_file
@@ -74,5 +79,7 @@ fi;
 else
     echo Sorry Could not resolve domain name.
 fi
+
+
 
 

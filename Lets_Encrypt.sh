@@ -56,7 +56,7 @@ echo "$host"
 ip=`dig +short $host`
 
 if [ -n "$ip" ]; then
-DAYS=30;
+DAYS=100;
 echo "checking if $url expires in less than $DAYS days";
 expirationdate=$(date -d "$(: | openssl s_client -connect $url:443 -servername $host 2>/dev/null \
                               | openssl x509 -text \

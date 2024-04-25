@@ -67,10 +67,19 @@ if [ $in30days -gt $expirationdate ]; then
     echo "Alert - Certificate for $host expires in less than $DAYS days, on $(date -d @$expirationdate '+%Y-%m-%d')"
     echo $host","$(date -d @$expirationdate '+%Y-%m-%d') >> $log_file
 
+    echo "running certbot with renew options and restarting Nginx"
+    sudo certbot renew --dry-run 
+    STATUS="$(systemctl is-active nginx.service)"
+if [ "${STATUS}" = "active" ]; then
+    echo "restarting Nginx"
+    systemctl restart nginx 
+else 
+    echo " Service not running.... so exiting "  
+    exit 1  
+fi
 
 
 
-    
 else
     echo "OK - Certificate expires on $(date -d @$expirationdate '+%Y-%m-%d')"
     echo $host","$(date -d @$expirationdate '+%Y-%m-%d') >> $log_file

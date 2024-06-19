@@ -77,7 +77,19 @@ sudo nmcli connection modify ${CONNECTION_UUID} ipv4.gateway ${NEW_GATEWAY}
 sudo nmcli connection modify ${CONNECTION_UUID} ipv4.dns "${NEW_DNS1} ${NEW_DNS2}"
 sudo nmcli connection modify ${CONNECTION_UUID} ipv4.method manual
 
-# Restart the network connection;;
+# Restart the network connection
+echo "Restarting the network connection..."
+sudo nmcli connection down ${CONNECTION_UUID}
+sudo nmcli connection up ${CONNECTION_UUID}
+
+echo "IP address changed successfully."
+echo "==========================="
+echo
+read -p "Enter the new hostname of this server: " hostname1
+echo $hostname1 | sudo tee /etc/hostname
+sudo hostnamectl set-hostname $hostname1
+
+;;
 
 
 "b"|"B")
@@ -114,16 +126,12 @@ echo "Shutdown now!") &
 exit
 ;;
 
-echo "Restarting the network connection..."
-sudo nmcli connection down ${CONNECTION_UUID}
-sudo nmcli connection up ${CONNECTION_UUID}
+*)
+echo "invalid answer, please try again"
+;;
 
-echo "IP address changed successfully."
+esac
+done
 
 
-echo "==========================="
-echo
-read -p "Enter the new hostname of this server: " hostname1
-echo $hostname1 | sudo tee /etc/hostname
-sudo hostnamectl set-hostname $hostname1
 

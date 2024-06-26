@@ -19,7 +19,7 @@ echo "v.1.0"
 
 
 #### start variables ###
-log_file="./certexpiry.txt"
+log_file="/var/log/certexpiry.txt"
 
 ### variables end   ###
 
@@ -61,18 +61,20 @@ renew_certificate() {
     STATUS="$(systemctl is-active nginx.service)"
 if [ "${STATUS}" = "active" ]; then
     echo "restarting Nginx"
+    echo $(date -u) $host"Nginx is restarting..." >> $log_file
     systemctl restart nginx 
 else 
     echo " Service not running.... so exiting "  
+    echo $(date -u) $host"Nginx Service not running..." >> $log_file
     exit 1  
 fi
     exit_code=$?
     if [ $exit_code -eq 0 ]; then
         echo "Certificate renewed successfully." 
-         echo $host",Cert renewed successfully "$(date -d '+%Y-%m-%d') >> $log_file
+        echo $(date -u) $host"Certificate renewed successfully." >> $log_file
     else
         echo "Failed to renew certificate. Exit code: $exit_code"
-        echo $host",Failed to renew Cert "$(date -d '+%Y-%m-%d') >> $log_file
+        echo $(date -u) $host"Failed to renew certificate. Exit code: $exit_code" >> $log_file
         exit $exit_code
     fi
 }
